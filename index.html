@@ -27,6 +27,10 @@ a:hover{color:#0f7a3a}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
 @keyframes spinRing{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.kv-burger{display:none}
+@media (max-width:880px){.kv-nav{display:none !important}.kv-search{display:none !important}.kv-quote{display:none !important}.kv-burger{display:flex !important}}
+@media (max-width:840px){main [style*="grid-template-columns"]{grid-template-columns:1fr !important}footer [style*="grid-template-columns"]{grid-template-columns:repeat(2,1fr) !important}main [style*="sticky"]{position:static !important}}
+@media (max-width:600px){footer [style*="grid-template-columns"]{grid-template-columns:1fr !important}.r-collapse{grid-template-columns:1fr !important}}
 </style>
 </helmet>
 
@@ -42,7 +46,7 @@ a:hover{color:#0f7a3a}
 <header style="position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid {{ headerBorder }};transition:box-shadow .2s,border-color .2s;box-shadow:{{ headerShadow }}">
   <div style="max-width:1200px;margin:0 auto;padding:0 24px;height:72px;display:flex;align-items:center;gap:14px">
     <img onClick="{{ goHome }}" src="assets/logo-horizontal.png" alt="KeeNvaa Biolabs Inc — For Better Tomorrow" style="height:38px;width:auto;cursor:pointer;flex:none">
-    <nav style="display:flex;align-items:center;gap:1px;margin-left:2px;flex:none">
+    <nav class="kv-nav" style="display:flex;align-items:center;gap:1px;margin-left:2px;flex:none">
       <button onClick="{{ goProducts }}" style="padding:8px 10px;border-radius:8px;font-size:14px;font-weight:500;color:#33425c;white-space:nowrap" style-hover="background:#f1f6fb;color:#1a4f9c">Products</button>
       <button onClick="{{ goApplications }}" style="padding:8px 10px;border-radius:8px;font-size:14px;font-weight:500;color:#33425c;white-space:nowrap" style-hover="background:#f1f6fb;color:#1a4f9c">Applications</button>
       <button onClick="{{ goFlagship }}" style="padding:8px 10px;border-radius:8px;font-size:14px;font-weight:500;color:#33425c;white-space:nowrap" style-hover="background:#f1f6fb;color:#1a4f9c">KNV DNA Express</button>
@@ -50,17 +54,39 @@ a:hover{color:#0f7a3a}
       <button onClick="{{ goContact }}" style="padding:8px 10px;border-radius:8px;font-size:14px;font-weight:500;color:#33425c;white-space:nowrap" style-hover="background:#f1f6fb;color:#1a4f9c">Contact</button>
     </nav>
     <div style="flex:1"></div>
-    <div style="display:flex;align-items:center;gap:8px;background:#f1f6fb;border:1px solid #dce6f2;border-radius:10px;padding:0 10px;height:42px;flex:0 1 190px;min-width:0;overflow:hidden">
+    <div class="kv-search" style="display:flex;align-items:center;gap:8px;background:#f1f6fb;border:1px solid #dce6f2;border-radius:10px;padding:0 10px;height:42px;flex:0 1 190px;min-width:0;overflow:hidden">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7688a3" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg>
       <input value="{{ q }}" onInput="{{ onSearchInput }}" onKeyDown="{{ onSearchKey }}" placeholder="Search catalog…" style="border:none;outline:none;background:transparent;flex:1;font-size:14px;color:#10233f;min-width:0">
     </div>
-    <button onClick="{{ openQuote }}" style="padding:0 15px;height:42px;border-radius:10px;font-size:14px;font-weight:600;color:#0f7a3a;border:1.5px solid #b7dcc3;background:#fff;white-space:nowrap;flex:none" style-hover="background:#f0faf3;border-color:#0f7a3a">Bulk quote</button>
+    <button onClick="{{ openQuote }}" class="kv-quote" style="padding:0 15px;height:42px;border-radius:10px;font-size:14px;font-weight:600;color:#0f7a3a;border:1.5px solid #b7dcc3;background:#fff;white-space:nowrap;flex:none" style-hover="background:#f0faf3;border-color:#0f7a3a">Bulk quote</button>
     <button onClick="{{ openCart }}" style="position:relative;height:42px;width:42px;border-radius:10px;background:#1a4f9c;display:flex;align-items:center;justify-content:center;flex:none" style-hover="background:#163f80">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
       <sc-if value="{{ cartCount }}"><span style="position:absolute;top:-6px;right:-6px;background:#7cc242;color:#0c2657;font-size:11px;font-weight:700;min-width:19px;height:19px;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fff">{{ cartCount }}</span></sc-if>
     </button>
+    <button onClick="{{ toggleMenu }}" class="kv-burger" style="align-items:center;justify-content:center;height:42px;width:42px;border-radius:10px;background:#f1f6fb;border:1px solid #dce6f2;flex:none"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0c2657" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
   </div>
 </header>
+<sc-if value="{{ menuOpen }}">
+<div style="position:fixed;inset:0;z-index:85">
+  <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;background:rgba(10,31,69,.45)"></div>
+  <div style="position:relative;background:#fff;padding:16px 20px 24px;display:flex;flex-direction:column;gap:5px;box-shadow:0 18px 34px -12px rgba(12,38,87,.5)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <img src="assets/logo-horizontal.png" alt="KeeNvaa Biolabs" style="height:34px;width:auto">
+      <button onClick="{{ closeMenu }}" style="width:38px;height:38px;border-radius:9px;background:#f1f6fb;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#42506a" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div style="display:flex;align-items:center;gap:9px;background:#f1f6fb;border:1px solid #dce6f2;border-radius:11px;padding:0 13px;height:48px;margin-bottom:8px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7688a3" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg>
+      <input value="{{ q }}" onInput="{{ onSearchInput }}" onKeyDown="{{ onSearchKey }}" placeholder="Search catalog…" style="border:none;outline:none;background:transparent;flex:1;font-size:15px;color:#10233f;min-width:0">
+    </div>
+    <button onClick="{{ goProducts }}" style="text-align:left;padding:13px 12px;border-radius:10px;font-size:16px;font-weight:600;color:#10233f;background:none" style-hover="background:#f1f6fb">Products</button>
+    <button onClick="{{ goApplications }}" style="text-align:left;padding:13px 12px;border-radius:10px;font-size:16px;font-weight:600;color:#10233f;background:none" style-hover="background:#f1f6fb">Applications</button>
+    <button onClick="{{ goFlagship }}" style="text-align:left;padding:13px 12px;border-radius:10px;font-size:16px;font-weight:600;color:#10233f;background:none" style-hover="background:#f1f6fb">KNV DNA Express</button>
+    <button onClick="{{ goAbout }}" style="text-align:left;padding:13px 12px;border-radius:10px;font-size:16px;font-weight:600;color:#10233f;background:none" style-hover="background:#f1f6fb">About</button>
+    <button onClick="{{ goContact }}" style="text-align:left;padding:13px 12px;border-radius:10px;font-size:16px;font-weight:600;color:#10233f;background:none" style-hover="background:#f1f6fb">Contact</button>
+    <button onClick="{{ openQuote }}" style="margin-top:10px;background:#0f7a3a;color:#fff;padding:14px;border-radius:11px;font-weight:700;font-size:15px">Request a bulk quote</button>
+  </div>
+</div>
+</sc-if>
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <main data-screen-label="Home">
@@ -783,12 +809,12 @@ a:hover{color:#0f7a3a}
     </div>
     <form onSubmit="{{ submitQuote }}" style="padding:20px 30px 30px">
       <p style="margin:0 0 20px;font-size:14.5px;color:#5c6b82;line-height:1.55">Tell us what you need — volume, custom formulation or private-label supply — and our team will reply within one business day.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="r-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <div><label style="display:block;font-size:12.5px;font-weight:600;color:#42506a;margin-bottom:6px">Name</label><input required style="width:100%;border:1px solid #d3dfec;border-radius:9px;padding:11px 12px;font-size:14px;color:#10233f" placeholder="Jane Doe"></div>
         <div><label style="display:block;font-size:12.5px;font-weight:600;color:#42506a;margin-bottom:6px">Work email</label><input required type="email" style="width:100%;border:1px solid #d3dfec;border-radius:9px;padding:11px 12px;font-size:14px;color:#10233f" placeholder="jane@lab.edu"></div>
       </div>
       <div style="margin-bottom:14px"><label style="display:block;font-size:12.5px;font-weight:600;color:#42506a;margin-bottom:6px">Organization</label><input style="width:100%;border:1px solid #d3dfec;border-radius:9px;padding:11px 12px;font-size:14px;color:#10233f" placeholder="University / company"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="r-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <div><label style="display:block;font-size:12.5px;font-weight:600;color:#42506a;margin-bottom:6px">Product(s)</label><input style="width:100%;border:1px solid #d3dfec;border-radius:9px;padding:11px 12px;font-size:14px;color:#10233f" placeholder="e.g. Taq, qPCR mix"></div>
         <div><label style="display:block;font-size:12.5px;font-weight:600;color:#42506a;margin-bottom:6px">Estimated volume</label><input style="width:100%;border:1px solid #d3dfec;border-radius:9px;padding:11px 12px;font-size:14px;color:#10233f" placeholder="e.g. 50,000 rxn / yr"></div>
       </div>
@@ -807,7 +833,7 @@ a:hover{color:#0f7a3a}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1600}}">
 class Component extends DCLogic {
-  state = { route:'home', cat:'all', app:'all', q:'', sort:'featured', selId:'knv-dna-express', unitIdx:0, qty:1, cart:[], cartOpen:false, quoteOpen:false, toast:'', scrolled:false };
+  state = { route:'home', cat:'all', app:'all', q:'', sort:'featured', selId:'knv-dna-express', unitIdx:0, qty:1, cart:[], cartOpen:false, quoteOpen:false, toast:'', scrolled:false, menuOpen:false };
 
   cats = [
     { id:'pcr', name:'PCR & Amplification', blurb:'Taq, Pfu & master mixes', color:'#1a4f9c', tint:'#e6f0fb' },
@@ -854,17 +880,17 @@ class Component extends DCLogic {
   catObj(id){ return this.cats.find(c => c.id === id) || {}; }
 
   top(cb){ this.setState(cb ? cb : {}, () => window.scrollTo({ top:0 })); }
-  go(route, cat){ const st = { route, cartOpen:false, quoteOpen:false }; if (route === 'catalog' && cat) st.cat = cat; this.setState(st, () => window.scrollTo({ top:0 })); }
-  openProduct(id){ this.setState({ route:'product', selId:id, unitIdx:0, qty:1, cartOpen:false, quoteOpen:false }, () => window.scrollTo({ top:0 })); }
+  go(route, cat){ const st = { route, cartOpen:false, quoteOpen:false, menuOpen:false }; if (route === 'catalog' && cat) st.cat = cat; this.setState(st, () => window.scrollTo({ top:0 })); }
+  openProduct(id){ this.setState({ route:'product', selId:id, unitIdx:0, qty:1, cartOpen:false, quoteOpen:false, menuOpen:false }, () => window.scrollTo({ top:0 })); }
   goHomeSection(anchor){
-    this.setState({ route:'home', cartOpen:false, quoteOpen:false }, () => {
+    this.setState({ route:'home', cartOpen:false, quoteOpen:false, menuOpen:false }, () => {
       requestAnimationFrame(() => { const el = document.getElementById(anchor); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth' }); else window.scrollTo({ top:0 }); });
     });
   }
 
   onSearchInput(e){ this.setState({ q:e.target.value }); }
   onSearchKey(e){ if (e.key === 'Enter') this.submitSearch(); }
-  submitSearch(){ this.setState({ route:'catalog', cat:'all', app:'all', cartOpen:false }, () => window.scrollTo({ top:0 })); }
+  submitSearch(){ this.setState({ route:'catalog', cat:'all', app:'all', cartOpen:false, menuOpen:false }, () => window.scrollTo({ top:0 })); }
   resetFilters(){ this.setState({ cat:'all', app:'all', q:'' }); }
 
   clearToastLater(){ clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast:'' }), 2400); }
@@ -969,7 +995,8 @@ class Component extends DCLogic {
       headerShadow: st.scrolled ? '0 6px 24px -14px rgba(12,38,87,.35)' : 'none',
       goHome:() => this.go('home'), goProducts:() => this.go('catalog','all'), goAbout:() => this.go('about'), goContact:() => this.go('contact'),
       goApplications:() => this.goHomeSection('applications'), goFlagship:() => this.openProduct('knv-dna-express'),
-      openQuote:() => this.setState({ quoteOpen:true, cartOpen:false }), closeQuote:() => this.setState({ quoteOpen:false }),
+      menuOpen: st.menuOpen, toggleMenu:() => this.setState(s => ({ menuOpen:!s.menuOpen })), closeMenu:() => this.setState({ menuOpen:false }),
+      openQuote:() => this.setState({ quoteOpen:true, cartOpen:false, menuOpen:false }), closeQuote:() => this.setState({ quoteOpen:false }),
       openCart:() => this.setState({ cartOpen:true }), closeCart:() => this.setState({ cartOpen:false }),
       q: st.q, onSearchInput:(e) => this.onSearchInput(e), onSearchKey:(e) => this.onSearchKey(e), submitSearch:() => this.submitSearch(),
       popular, featured, cats, appTiles,
