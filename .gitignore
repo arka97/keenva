@@ -1,0 +1,14 @@
+node_modules
+.tanstack
+.vercel
+dist
+.output
+.nitro
+.wrangler
+artifacts
+screenshots
+.grok
+*.local
+.env
+.env.*
+!.env.example
